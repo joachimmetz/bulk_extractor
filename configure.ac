@@ -11,7 +11,14 @@ AC_INIT(BULK_EXTRACTOR, 1.6.0, bugs@digitalcorpora.org)
 
 AC_CONFIG_MACRO_DIR(m4)
 
-# 
+dnl Check if OSS-Fuzz build environment is available and fuzz targets should be build
+AM_CONDITIONAL(
+  HAVE_LIB_FUZZING_ENGINE,
+  [test "x${LIB_FUZZING_ENGINE}" != x])
+AC_SUBST(
+  [LIB_FUZZING_ENGINE],
+  ["${LIB_FUZZING_ENGINE}"])
+
 # NOTE 1 - plugins/Makefile is referenced so that the plugins Makefile is created.
 # However, plugins is not listed as a SUBDIR for Makefile.am in this directory.
 # That prevents the plugins from automatically being built each time.
@@ -22,7 +29,7 @@ AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile doc/latex_manuals/Makefile \
 			  man/Makefile python/Makefile \
                           plugins/Makefile \
 			  specfiles/Makefile specfiles/bulk_extractor.spec.m4 \
-			  java_gui/Makefile tests/Makefile ])
+			  java_gui/Makefile tests/Makefile ossfuzz/Makefile ])
 AC_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
